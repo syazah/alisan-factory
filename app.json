@@ -4,7 +4,7 @@
     "slug": "alisanapp",
     "scheme": "alisanapp",
     "newArchEnabled": true,
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -57,8 +57,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "090f8f01-d8b2-4bcb-b5ec-6e12c8598c81"
+        "projectId": "0b1342a4-eaf0-4996-b1db-62b5197abfd8"
       }
-    }
+    },
+    "owner": "syazah"
   }
 }

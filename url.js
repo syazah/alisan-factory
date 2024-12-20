@@ -1,2 +1,3 @@
-const url = "http://ec2-13-201-89-6.ap-south-1.compute.amazonaws.com:8000";
+// const url = "http://13.201.89.6:8000";
+const url = "https://touch.alisan.co.in";
 export default url;

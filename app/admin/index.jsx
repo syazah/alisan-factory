@@ -16,12 +16,16 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
+
 const Home = () => {
   const [admin, setAdmin] = useState(null);
   const [orders, setOrders] = useState(null);
   async function GetAdminDetails() {
     try {
       const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        return Alert.alert("Error", "Token is not found");
+      }
       const res = await fetch(`${url}/api/v1/admin/admin-details`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,9 +58,12 @@ const Home = () => {
   }, []);
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-zinc-100">
-      {admin === null || orders === null ? (
-        <View style={{ flex: 1 }} className="bg-zinc-800">
-          <ActivityIndicator style={{ flex: 1 }} />
+      {admin === null ? (
+        <View
+          style={{ flex: 1 }}
+          className="bg-zinc-800 justify-center items-center"
+        >
+          <ActivityIndicator color={"red"} style={{ flex: 1 }} />
         </View>
       ) : (
         <View className="flex-1">

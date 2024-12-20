@@ -11,75 +11,75 @@ import {
 import React from "react";
 import url from "../../url";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { Picker } from "@react-native-picker/picker";
 
 const SignUp = () => {
   const { width } = Dimensions.get("window");
+
   const [formData, setFormData] = React.useState({
-    type: 0,
     email: "",
     password: "",
-    type: 0,
+    type: 1,
   });
   const [loading, setLoading] = React.useState(false);
   async function sendRequest() {
     try {
+      // Validate input
       if (!formData.email || !formData.password) {
         return Alert.alert("Incomplete Data", "Details Should Be Filled");
       }
-      setLoading(true);
-      const res = await fetch(
-        `${url}/api/v1/${
-          formData.type === 0
-            ? "admin"
-            : formData.type === 1
-            ? "sales"
-            : formData.type === 2
-            ? "manufacturer"
-            : "worker"
-        }/signin`,
+      const userTypePath =
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-        }
-      );
+          1: "admin",
+          2: "sales",
+          3: "manufacturer",
+          4: "worker",
+        }[formData.type] || "worker";
+
+      // Make API request
+      const res = await fetch(`${url}/api/v1/${userTypePath}/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
       const data = await res.json();
+
       if (!data.success) {
         setLoading(false);
         return Alert.alert("Error", data.message);
-      } else {
-        setLoading(false);
-        await AsyncStorage.setItem("token", data.token);
-        await AsyncStorage.setItem(
-          "userType",
-          formData.type === 0
-            ? "admin"
-            : formData.type === 1
-            ? "sales"
-            : formData.type === 2
-            ? "manufacturer"
-            : "worker"
-        );
-        if (data.type === 0) {
-          setLoading(false);
-          return router.replace("/admin");
-        } else if (data.type === 1) {
-          setLoading(false);
-          return router.replace("/sales");
-        } else if (data.type === 2) {
-          setLoading(false);
-          return router.replace("/manufacturer");
-        } else {
-          setLoading(false);
-          return router.replace("/worker");
-        }
       }
+
+      // Store data first before navigation
+      try {
+        await AsyncStorage.setItem("token", data.token);
+        await AsyncStorage.setItem("userType", userTypePath);
+      } catch (storageError) {
+        console.error("Storage error:", storageError);
+        setLoading(false);
+        return Alert.alert("Error", "Failed to save login information");
+      }
+
+      // Navigation
+      const routePath = {
+        1: "/admin",
+        2: "/sales",
+        3: "/manufacturer",
+        4: "/worker",
+      }[data.type];
+
+      if (!routePath) {
+        setLoading(false);
+        return Alert.alert("Error", "Invalid user type received");
+      }
+
+      router.replace(routePath);
       setLoading(false);
     } catch (error) {
+      console.error("Sign in error:", error);
       setLoading(false);
-      Alert.alert("Error", "Something went wrong while fetching user");
+      Alert.alert("Error", "Failed to sign in. Please try again.");
     }
   }
   return (
@@ -115,7 +115,7 @@ const SignUp = () => {
             <TextInput
               placeholderTextColor="#555"
               placeholder="********"
-              sele={formData.password}
+              value={formData.password}
               onChangeText={(value) =>
                 setFormData({ ...formData, password: value.trim(" ") })
               }
@@ -129,7 +129,7 @@ const SignUp = () => {
               dropdownIconColor={"white"}
               selectedValue={formData.type}
               onValueChange={(value) =>
-                setFormData({ ...formData, type: Number(value) })
+                setFormData({ ...formData, type: parseInt(value, 10) })
               }
               style={{
                 width: "100%",
@@ -137,9 +137,11 @@ const SignUp = () => {
                 backgroundColor: "maroon",
               }}
             >
-              {["Admin", "Sales", "Manufacturer", "Worker"].map((el, index) => (
-                <Picker.Item key={index} value={index} label={el} />
-              ))}
+              {["Admin", "Sales", "Manufacturer", "Operators"].map(
+                (el, index) => (
+                  <Picker.Item key={index + 1} value={index + 1} label={el} />
+                )
+              )}
             </Picker>
           </View>
         </View>
