@@ -41,7 +41,7 @@ const AddWorker = () => {
     <SafeAreaView className="bg-zinc-800 flex-1">
       <View className="w-full p-2">
         <Text className="text-white font-semibold text-2xl border-b-[1px] border-red-600">
-          Add Worker
+          Add Operator
         </Text>
       </View>
       <InputData

@@ -22,6 +22,7 @@ import * as Print from "expo-print";
 import * as Sharing from "expo-sharing";
 
 import { CalculatePanelData } from "../../utils/panelDataCalculator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const Quotation = () => {
   const [editQuotation, setEditQuotation] = React.useState(false);
   const orderDetailForBOM = useRecoilValue(orderDetailForBomGeneration);
@@ -246,10 +247,20 @@ const Quotation = () => {
   }
   async function SendToAdmin() {
     try {
-      const res = await fetch(`${url}/api/v1/sales/send-admin`, {
+      const token = await AsyncStorage.getItem("token");
+      const panelDataToSend = orderDetailForBOM.panelData.map((panelData) => {
+        console.log(panelData);
+        return {
+          ...panelData,
+          panelName: panelData.panelData.panelName,
+          panelType: "SalesPanel",
+          panelCollection: "SalesCollection",
+        };
+      });
+      const res = await fetch(`${url}/api/v1/sales/create-order`, {
         headers: { "Content-Type": "application/json" },
         method: "POST",
-        body: JSON.stringify({ id: orderDetailForBOM._id }),
+        body: JSON.stringify({ panelData: panelDataToSend, token }),
       });
       const data = await res.json();
       if (data.success === true) {

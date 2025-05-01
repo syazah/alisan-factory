@@ -76,11 +76,21 @@ const WorkerHome = () => {
                 </Text>
               </Text>
               <Text className="font-semibold text-base text-zinc-700">
-                Worker Account
+                Operator Account
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => LogOut()}
+              onPress={() => {
+                Alert.alert(
+                  "Log Out",
+                  "Do you want to logout from the current user type ?",
+                  [
+                    { text: "cancel", style: "cancel" },
+                    { text: "Logout", onPress: () => LogOut() },
+                  ],
+                  { cancelable: true }
+                );
+              }}
               className="w-14 h-14 rounded-full bg-red-700 justify-center items-center border-[2px] border-zinc-800"
             >
               <Text className="font-semibold text-2xl uppercase text-white ">{`${

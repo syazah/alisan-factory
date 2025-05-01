@@ -204,9 +204,11 @@ const SignUp = () => {
                 backgroundColor: "maroon",
               }}
             >
-              {["Admin", "Sales", "Manufacturer", "Worker"].map((el, index) => (
-                <Picker.Item key={index + 1} value={index + 1} label={el} />
-              ))}
+              {["Admin", "Sales", "Manufacturer", "Operator"].map(
+                (el, index) => (
+                  <Picker.Item key={index + 1} value={index + 1} label={el} />
+                )
+              )}
             </Picker>
           </View>
         </View>

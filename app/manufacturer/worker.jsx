@@ -50,7 +50,7 @@ const Worker = () => {
   return (
     <SafeAreaView className="flex-1 bg-zinc-200">
       <View className="w-full flex-row h-[8%] justify-between items-center p-2">
-        <Text className="text-red-800 font-semibold text-4xl">Workers</Text>
+        <Text className="text-red-800 font-semibold text-4xl">Operators</Text>
         <TouchableOpacity
           onPress={() => router.navigate("/manufacturer/add-worker")}
         >

@@ -193,6 +193,7 @@ const SpecificOrder = () => {
     timeAgoMessage = `${days} days ago`;
   }
   const { width } = Dimensions.get("window");
+  console.log(orderDetail);
   return (
     <SafeAreaView
       style={{ flex: 1, width }}
@@ -253,27 +254,28 @@ const SpecificOrder = () => {
               Order Generated : {timeAgoMessage}
             </Text>
           </View>
-          <View className="flex flex-col mt-2">
-            <Text className="text-base w-full font-semibold text-red-800">
-              Client Data
-            </Text>
-            <Text className="text-base w-full border-b-[1px] border-zinc-300">
-              Name : {orderDetail.raisedBy.name}
-            </Text>
-            <Text className="text-base w-full border-b-[1px] border-zinc-300">
-              Email : {orderDetail.raisedBy.email}
-            </Text>
-            <Text className="text-base w-full border-b-[1px] border-zinc-300">
-              Username : @{orderDetail.raisedBy.username}
-            </Text>
-            <Text className="text-base w-full border-b-[1px] border-zinc-300">
-              Phone Number : {orderDetail.raisedBy.number}
-            </Text>
-            <Text className="text-base w-full border-b-[1px] border-zinc-300">
-              Created By : {orderDetail.raisedBy.createdBy.name} [
-              {orderDetail.raisedBy.createdByModel}]
-            </Text>
-          </View>
+          {orderDetail.raisedBy && (
+            <View className="flex flex-col mt-2">
+              <Text className="text-base w-full font-semibold text-red-800">
+                Client Data
+              </Text>
+              <Text className="text-base w-full border-b-[1px] border-zinc-300">
+                Name : {orderDetail.raisedBy?.name}
+              </Text>
+              <Text className="text-base w-full border-b-[1px] border-zinc-300">
+                Email : {orderDetail.raisedBy?.email}
+              </Text>
+              <Text className="text-base w-full border-b-[1px] border-zinc-300">
+                Username : @{orderDetail.raisedBy?.username}
+              </Text>
+              <Text className="text-base w-full border-b-[1px] border-zinc-300">
+                Phone Number : {orderDetail.raisedBy?.number}
+              </Text>
+              <Text className="text-base w-full border-b-[1px] border-zinc-300">
+                Created By : {} [{orderDetail.raisedBy?.createdByModel}]
+              </Text>
+            </View>
+          )}
           <View className="flex flex-col mt-2">
             <Text className="text-base w-full font-semibold text-red-800">
               Panel Data

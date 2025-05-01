@@ -1,3 +1,3 @@
-// const url = "http://13.201.89.6:8000";
-const url = "https://touch.alisan.co.in";
+const url = "http://192.168.243.107:8000";
+// const url = "https://touch.alisan.co.in";
 export default url;
