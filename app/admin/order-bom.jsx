@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from "react-native";
 import React, { useEffect } from "react";
 import { useRecoilValue } from "recoil";
@@ -19,6 +20,9 @@ import url from "../../url";
 import BottomSheet from "../../components/BottomSheet";
 import { extractAvailableItems } from "../../utils/availableItemExtractor";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AntDesign from '@expo/vector-icons/AntDesign';
+import * as Print from 'expo-print';
+import * as Sharing from 'expo-sharing';
 
 const OrderDetailBom = () => {
   const orderDetailForBOM = useRecoilValue(orderDetailForBomGeneration);
@@ -28,6 +32,8 @@ const OrderDetailBom = () => {
   const [loading, setLoading] = React.useState(false);
   const [inventory, setInventory] = React.useState(null);
   const [inventoryOpen, setInventoryOpen] = React.useState(false);
+  const [companyNameModalVisible, setCompanyNameModalVisible] = React.useState(false);
+  const [companyName, setCompanyName] = React.useState("Alisan Smart Homes");
 
   async function getInventory() {
     try {
@@ -90,6 +96,214 @@ const OrderDetailBom = () => {
     </View>
   );
 
+  const downloadScreenAsPDF = async () => {
+    // Open the modal to get the company name
+    setCompanyNameModalVisible(true);
+  }
+
+  const generateAndDownloadPDF = async () => {
+    const htmlContent = generateHTML(); // Generate the HTML string for the screen
+    const { uri } = await Print.printToFileAsync({ html: htmlContent }); // Convert to PDF
+
+    if (await Sharing.isAvailableAsync()) {
+      await Sharing.shareAsync(uri);
+    } else {
+      alert("Sharing is not available on this device");
+    }
+  }
+
+  const generateHTML = () => {
+    const renderTableRows = (data, keyPrefix) => {
+      return Object.entries(data)
+        .filter(([_, value]) => value !== 0)
+        .map(
+          ([key, value], index) => `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${key}</td>
+              <td>${value} units</td>
+            </tr>
+          `
+        )
+        .join("");
+    };
+
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Bill of Material</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+          }
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+          }
+          .header img {
+            max-width: 150px;
+          }
+          .header .address {
+            text-align: right;
+            font-size: 12px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+          }
+          th {
+            background-color: #f2f2f2;
+          }
+          tr:nth-child(even) {
+            background-color: #f9f9f9;
+          }
+          .total-row {
+            font-weight: bold;
+            background-color: #e0e0e0;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <img src="https://www.alisan.io/images/alisan-smart-homes.png" alt="Alisan Smart Homes">
+          <div class="address">
+            <p>7-8, Sehrawat Complex,<br>
+            Near Hanuman Mandir, Iffco Chowk,<br>
+            Sukhrali, Gurugram, Haryana – 122001</p>
+          </div>
+        </div>
+        <h1>Bill of Material</h1>
+        <h2>For: ${companyName}</h2>
+        <h2>Reference #${orderDetailForBOM.referenceNumber}</h2>
+
+        <h3>Front Panels</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(panelData.frontPanelsCount, "front")}
+          </tbody>
+        </table>
+
+        <h3>Back Panels</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(panelData.backPanel, "back")}
+          </tbody>
+        </table>
+
+        <h3>Glass Parts</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(boardData.glassPart, "glass")}
+          </tbody>
+        </table>
+
+        <h3>Hardware Components</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Screws</td>
+              <td>${boardData.screws} units</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>ESP Modules</td>
+              <td>${orderDetailForBOM.panelData.length} units</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Power Supply</td>
+              <td>${orderDetailForBOM.panelData.length} units</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Touch Sense Boards</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(boardData.touchSenseBoard, "touch")}
+          </tbody>
+        </table>
+
+        <h3>Relay Boards</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(boardData.relayBoard, "relay")}
+          </tbody>
+        </table>
+
+        <h3>C Sections</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>SR No</th>
+              <th>Component</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${renderTableRows(boardData.cSection, "csection")}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-gray-50">
       <View className="bg-red-800 p-4 shadow-lg">
@@ -109,6 +323,7 @@ const OrderDetailBom = () => {
             }}
             resizeMode="contain"
           />
+          <TouchableOpacity activeOpacity={0.8} className="w-10 h-10 rounded-full bg-white justify-center items-center" onPress={downloadScreenAsPDF}><AntDesign name="download" size={24} color="black" /></TouchableOpacity>
         </View>
       </View>
 
@@ -172,6 +387,40 @@ const OrderDetailBom = () => {
           inventoryAssigned={orderDetailForBOM?.inventoryAssigned || false}
         />
       </BottomSheet>
+
+      {/* Company Name Modal */}
+      {companyNameModalVisible && (
+        <View className="w-full h-full inset-0 flex-1 bg-black/40 absolute top-0 left-0 bottom-0 right-0 justify-center items-center">
+          <View className="w-[90%] p-4 bg-white rounded-xl">
+            <View className="flex-row justify-between items-center border-b-[1px] border-zinc-800 pb-2">
+              <Text className="text-red-800 font-semibold text-lg">Enter Company Name</Text>
+              <TouchableOpacity onPress={() => setCompanyNameModalVisible(false)}>
+                <AntDesign name="close" size={24} color="maroon" />
+              </TouchableOpacity>
+            </View>
+            <Text className="text-zinc-600 text-sm py-3">
+              Enter the company name that will be displayed on the PDF document.
+            </Text>
+            <TextInput
+              value={companyName}
+              onChangeText={(value) => setCompanyName(value)}
+              placeholder="Company Name"
+              className="w-full p-3 bg-zinc-100 rounded-xl mb-4"
+            />
+            <View className="w-full flex-row justify-end items-center">
+              <TouchableOpacity
+                onPress={() => {
+                  setCompanyNameModalVisible(false);
+                  generateAndDownloadPDF();
+                }}
+                className="px-5 py-2 bg-red-800 rounded-lg"
+              >
+                <Text className="text-white font-medium">Download PDF</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

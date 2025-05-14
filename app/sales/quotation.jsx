@@ -1,4 +1,4 @@
-import {
+ import {
   View,
   Text,
   Alert,
@@ -245,6 +245,8 @@ const Quotation = () => {
       );
     }
   }
+
+
   async function SendToAdmin() {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -451,7 +453,15 @@ const Quotation = () => {
             <View className="w-full flex-row justify-end items-center p-2">
               {salesCost > TotalCost && (
                 <TouchableOpacity
-                  onPress={() => SetQuotationCost()}
+                  onPress={() => {
+                    console.log(orderDetailForBOM._id)
+                    if(orderDetailForBOM._id){
+                      SetQuotationCost()
+                    }
+                    else{
+                      Alert.alert("Not Allowed", "You cannot update the quotation before sending it to admin")
+                    }
+                  }}
                   className="px-4 py-2 bg-red-800 rounded-lg"
                 >
                   <Text className="text-white">

@@ -30,6 +30,8 @@ const Quotation = () => {
   const [finalSalesCost, setFinalSalesCost] = React.useState(null);
   const [updatingCost, setUpdatingCost] = React.useState(false);
   const quoteRef = useRef(null);
+  const [companyNameModalVisible, setCompanyNameModalVisible] = React.useState(false);
+  const [companyName, setCompanyName] = React.useState("Alisan Smart Homes");
 
   async function getBriefQuotation(panelDataArray) {
     try {
@@ -64,6 +66,11 @@ const Quotation = () => {
     getBriefQuotation(orderDetailForBOM.panelData);
   }, []);
   const downloadPDF = async () => {
+    // Open the modal to get the company name
+    setCompanyNameModalVisible(true);
+  };
+  
+  const generateAndDownloadPDF = async () => {
     const htmlContent = generateHTML(); // Generate the HTML string
     const { uri } = await Print.printToFileAsync({ html: htmlContent }); // Convert to PDF
 
@@ -152,6 +159,9 @@ const Quotation = () => {
             </tr>
             <tr class="info-row">
               <td colspan="7"><h2>Quotation</h2></td>
+            </tr>
+            <tr class="info-row">
+              <td colspan="7"><h3>For: ${companyName}</h3></td>
             </tr>
             <tr class="info-row">
               <td colspan="7"><h3>Reference Number: ${
@@ -378,6 +388,41 @@ const Quotation = () => {
       >
         <Feather name="download" size={26} color="white" />
       </TouchableOpacity>
+      
+      {/* Company Name Modal */}
+      {companyNameModalVisible && (
+        <View className="w-full h-full inset-0 flex-1 bg-black/40 absolute top-0 left-0 bottom-0 right-0 justify-center items-center">
+          <View className="w-[90%] p-4 bg-white rounded-xl">
+            <View className="flex-row justify-between items-center border-b-[1px] border-zinc-800 pb-2">
+              <Text className="text-red-800 font-semibold text-lg">Enter Company Name</Text>
+              <TouchableOpacity onPress={() => setCompanyNameModalVisible(false)}>
+                <Entypo name="circle-with-cross" size={24} color="maroon" />
+              </TouchableOpacity>
+            </View>
+            <Text className="text-zinc-600 text-sm py-3">
+              Enter the company name that will be displayed on the PDF document.
+            </Text>
+            <TextInput
+              value={companyName}
+              onChangeText={(value) => setCompanyName(value)}
+              placeholder="Company Name"
+              className="w-full p-3 bg-zinc-100 rounded-xl mb-4"
+            />
+            <View className="w-full flex-row justify-end items-center">
+              <TouchableOpacity
+                onPress={() => {
+                  setCompanyNameModalVisible(false);
+                  generateAndDownloadPDF();
+                }}
+                className="px-5 py-2 bg-red-800 rounded-lg"
+              >
+                <Text className="text-white font-medium">Download PDF</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
+      
       {editQuotation && (
         <View className="w-full h-full inset-0 flex-1 bg-black/40 mt-10 absolute top-0 left-0 bottom-0 right-0 justify-center items-center">
           <View className="w-[90%] p-2 bg-white rounded-xl ">
