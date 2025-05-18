@@ -11,16 +11,17 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CustomPanelBuilder, SalesCustomer } from "../../store/admin/atom";
 import { Picker } from "@react-native-picker/picker";
-import Circuits from "../../components/Circuits";
-import { router } from "expo-router";
+import Circuits from "../../../components/Circuits";
+import { router, useLocalSearchParams } from "expo-router";
+import url from "../../../url";
+import { CustomPanelBuilder } from "../../../store/admin/atom";
 
 const PanelBuilder = () => {
+    const {id} = useLocalSearchParams();
   const [currentData, setCurrentData] = useRecoilState(CustomPanelBuilder);
   const [currentStep, setCurrentStep] = React.useState(0);
   const [spaceLeft, setSpaceLeft] = React.useState(2);
-  const [customer, setCustomer] = useRecoilState(SalesCustomer);
   const flatListRef = useRef(null);
 
   const moveStep = () => {
@@ -38,10 +39,25 @@ const PanelBuilder = () => {
             { text: "Cancel", style: "cancel" },
             {
               text: "Submit",
-              onPress: () => {
-                const newPanels = [...customer.panelData, currentData];
-                setCustomer({ ...customer, panelData: newPanels });
-                return router.replace("/sales/custom-panels");
+              onPress: async () => {
+                 console.log("currentData", currentData);
+                const res = await fetch(`${url}/api/v1/sales/create-panel`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    panelData: currentData,
+                    collectionId: id,
+                  }),
+                });
+                const data = await res.json();
+                if (data.success) {
+                  Alert.alert("Success", "Panel created successfully");
+                  router.replace(`/sales`)
+                } else {
+                  Alert.alert("Error", data.message);
+                }
               },
             },
           ],
@@ -133,10 +149,6 @@ const PanelBuilder = () => {
           </View>
         </View>
         <View className="h-[88%] p-2 gap-2">
-          <View className="flex-row justify-between items-start border-b-[1px] border-zinc-400">
-            <Text className="font-normal">Customer Name</Text>
-            <Text className="font-semibold">{customer.name}</Text>
-          </View>
           <View className="flex-row justify-between items-start border-b-[1px] border-zinc-400">
             <Text className="font-normal">Module Size</Text>
             <Text className="font-semibold">{currentData.panelSize}</Text>

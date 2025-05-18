@@ -6,9 +6,11 @@ const SalesLayout = () => {
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="quotation" options={{ headerShown: false }} />
-      <Stack.Screen name="panel-builder" options={{ headerShown: false }} />
+      <Stack.Screen name="panel-builder/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="custom-panels" options={{ headerShown: false }} />
       <Stack.Screen name="view-order/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="view-admin-order/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="build-panels/[id]" options={{ headerShown: false }} />
       <Stack.Screen
         name="view-custom-order/[id]"
         options={{ headerShown: false }}

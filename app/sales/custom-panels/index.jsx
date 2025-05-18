@@ -1,181 +1,217 @@
 import {
   View,
   Text,
-  TouchableOpacity,
-  TextInput,
   Alert,
-  ScrollView,
+  ActivityIndicator,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  StatusBar,
+  Animated,
+  TextInput,
 } from "react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Fontisto from "@expo/vector-icons/Fontisto";
-import { useRecoilState } from "recoil";
-import { SalesCustomer } from "../../../store/admin/atom";
-import { router } from "expo-router";
 import url from "../../../url";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const CustomPanelBuilder = () => {
-  const [currentOpenDropdown, setCurrentOpenDropdown] = React.useState(0);
-  const [customer, setCustomer] = useRecoilState(SalesCustomer);
-  const [addingCustomer, setAddingCustomer] = React.useState(false);
-  async function HandleAddCustomer() {
+import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+
+const PanelCustomers = () => {
+  const [customers, setCustomers] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const scrollY = useRef(new Animated.Value(0)).current;
+  
+  async function GetCustomers() {
+    setIsLoading(true);
     try {
       const token = await AsyncStorage.getItem("token");
-      setAddingCustomer(true);
-      if (Object.values(customer).some((val) => val === "")) {
-        return Alert.alert("Error", "Fill Customer Details");
-      }
-      if (customer.panelData.length === 0) {
-        return Alert.alert("Error", "Add at least one panel");
-      }
-      const res = await fetch(`${url}/api/v1/sales/add-customer`, {
+      const res = await fetch(`${url}/api/v1/sales/get-customer`, {
         headers: { "Content-Type": "application/json" },
         method: "POST",
-        body: JSON.stringify({ ...customer, token }),
+        body: JSON.stringify({ token }),
       });
       const data = await res.json();
       if (data.success === true) {
-        setAddingCustomer({
-          name: "",
-          email: "",
-          phone: "",
-          address: "",
-          city: "",
-          state: "",
-          panelData: [],
-        });
-        Alert.alert(
-          "Success",
-          "Added customer to your collection, View in history"
-        );
-        setAddingCustomer(false);
-        return router.replace("/sales");
-      }
-      if (data.success === false) {
-        setAddingCustomer(false);
-        return Alert.alert("Error", data.message);
+        setCustomers(data.data);
+      } else {
+        Alert.alert("Error", data.message);
       }
     } catch (error) {
-      setAddingCustomer(false);
-      return Alert.alert("Error", "Something went wrong, try again later");
+      Alert.alert(
+        "Error",
+        "Something went wrong while getting customers"
+      );
+    } finally {
+      setIsLoading(false);
     }
   }
-  return (
-    <SafeAreaView className={"flex-1 bg-zinc-800"}>
-      <View className="w-full h-[10%] p-2 flex-row justify-between items-center">
-        <Text className="text-white font-semibold text-2xl">Panel Builder</Text>
-        <TouchableOpacity
-          onPress={HandleAddCustomer}
-          className="px-4 justify-center h-10 bg-red-800 rounded-full"
-        >
-          <Text className="text-white font-semibold">
-            {addingCustomer ? "Loading..." : "Submit"}
-          </Text>
-        </TouchableOpacity>
+
+  React.useEffect(() => {
+    GetCustomers();
+  }, []);
+
+  const handleAddCustomer = () => {
+    router.navigate("/sales/custom-panels/customer");
+  };
+
+  const handleRefresh = () => {
+    GetCustomers();
+  };
+
+  const filteredCustomers = customers?.filter(customer => 
+    customer.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    customer.phone?.includes(searchQuery)
+  ) || [];
+
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [150, 70],
+    extrapolate: 'clamp'
+  });
+
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, 60, 90],
+    outputRange: [1, 0.3, 0],
+    extrapolate: 'clamp'
+  });
+
+  const titleScale = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: [1, 0.8],
+    extrapolate: 'clamp'
+  });
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 bg-white justify-center items-center">
+        <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+        <ActivityIndicator size="large" color="#FF3B30" />
+        <Text className="mt-4 text-gray-600 font-medium">Loading customers...</Text>
       </View>
-      <View className="w-full h-[90%] bg-zinc-200 rounded-t-xl p-4">
-        <ScrollView>
-          {/* CUSTOMER DETAILS  */}
-          <View>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                if (currentOpenDropdown === 0) {
-                  return setCurrentOpenDropdown(-1);
-                }
-                setCurrentOpenDropdown(0);
-              }}
-              className="w-full bg-red-800 rounded-t-xl p-2 flex-row justify-between items-center"
-            >
-              <Text className="text-white font-semibold text-xl">
-                Customer Details
-              </Text>
-              {currentOpenDropdown === 0 ? (
-                <Fontisto name="caret-up" size={24} color="white" />
-              ) : (
-                <Fontisto name="caret-down" size={24} color="white" />
-              )}
+    );
+  }
+
+  return (
+    <SafeAreaView className="flex-1 bg-white">
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      
+      {/* Animated Header */}
+      <Animated.View 
+        style={{ height: headerHeight }} 
+        className="w-full bg-white px-4 pb-2"
+      >
+        <Animated.View 
+          style={{ opacity: headerOpacity }}
+          className="mt-2"
+        >
+          <Text className="text-gray-400 font-medium text-sm">Welcome to</Text>
+        </Animated.View>
+        
+        <Animated.Text 
+          style={{ transform: [{ scale: titleScale }] }}
+          className="text-3xl font-bold text-gray-800 mb-3"
+        >
+          Customer Panel
+        </Animated.Text>
+        
+        {/* Search Bar */}
+        <View className="flex-row items-center bg-gray-100 rounded-xl px-3 py-2 mb-2">
+          <Ionicons name="search-outline" size={20} color="#9CA3AF" />
+          <TextInput
+            placeholder="Search customers..."
+            className="flex-1 ml-2 text-gray-800"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={() => setSearchQuery("")}>
+              <Ionicons name="close-circle" size={20} color="#9CA3AF" />
             </TouchableOpacity>
-            {currentOpenDropdown === 0 && <CustomerDetails />}
-          </View>
-          <View className="mt-2">
-            {customer.panelData.map((panel, index) => {
-              return (
-                <View key={index} className="bg-red-800 rounded-full p-2 mt-1">
-                  <Text className="text-white font-semibold">
-                    {panel.panelName}
-                  </Text>
-                </View>
-              );
-            })}
+          )}
+        </View>
+      </Animated.View>
+
+      {/* Customer List */}
+      <View className="flex-1 bg-white px-3 pb-3">
+        {filteredCustomers.length === 0 ? (
+          <View className="flex-1 justify-center items-center">
+            <MaterialIcons name="people-outline" size={70} color="#E5E7EB" />
+            <Text className="text-gray-400 mt-4 text-center px-6">
+              {searchQuery ? "No customers match your search" : "No customers found. Add your first customer!"}
+            </Text>
             <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => {
-                if (Object.values(customer).some((val) => val === "")) {
-                  return Alert.alert("Error", "Fill Customer Details");
-                }
-                router.navigate("/sales/panel-builder");
-              }}
-              className="w-full bg-zinc-100 border-[1px] border-red-800 rounded-full justify-center items-center p-2 flex-row  mt-4"
+              onPress={handleRefresh}
+              className="mt-4 py-2 px-4 rounded-lg bg-gray-100"
             >
-              <Text className="text-red-800 font-semibold text-xl">
-                {addingCustomer ? "Loading..." : "Add Panel"}
-              </Text>
+              <Text className="text-gray-700 font-medium">Refresh</Text>
             </TouchableOpacity>
           </View>
-        </ScrollView>
+        ) : (
+          <Animated.FlatList
+            data={filteredCustomers}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: false }
+            )}
+            contentContainerStyle={{ paddingBottom: 80 }}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                onPress={() => router.navigate(`/sales/view-custom-order/${item._id}`)}
+                className="bg-white mb-3 rounded-xl overflow-hidden shadow-sm border border-gray-100"
+              >
+                <LinearGradient
+                  colors={['#ffffff', '#f9fafb']}
+                  className="p-4"
+                >
+                  <View className="flex-row justify-between items-start">
+                    <View className="flex-1">
+                      <Text numberOfLines={1} className="text-lg font-semibold text-gray-800">
+                        {item.name || "Unnamed Customer"}
+                      </Text>
+                      
+                      <View className="flex-row items-center mt-2">
+                        <MaterialIcons name="email" size={16} color="#9CA3AF" />
+                        <Text numberOfLines={1} className="text-gray-600 ml-2 flex-1">
+                          {item.email || "No email provided"}
+                        </Text>
+                      </View>
+                      
+                      <View className="flex-row items-center mt-2">
+                        <FontAwesome name="phone" size={16} color="#9CA3AF" />
+                        <Text className="text-gray-600 ml-2">
+                          {item.phone || "No phone provided"}
+                        </Text>
+                      </View>
+                    </View>
+                    
+                    <TouchableOpacity 
+                      className="h-9 w-9 rounded-full bg-gray-100 justify-center items-center"
+                      onPress={() => router.navigate(`/sales/view-custom-order/${item._id}`)}
+                    >
+                      <Ionicons name="chevron-forward" size={18} color="#4B5563" />
+                    </TouchableOpacity>
+                  </View>
+                </LinearGradient>
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item._id}
+          />
+        )}
+        
+        {/* Add Customer Button */}
+        <TouchableOpacity
+          onPress={handleAddCustomer}
+          className="absolute bottom-6 right-6 w-14 h-14 bg-red-600 rounded-full justify-center items-center shadow-lg elevation-5"
+        >
+          <Ionicons name="add" size={28} color="white" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
 
-const CustomerDetails = () => {
-  const [customer, setCustomer] = useRecoilState(SalesCustomer);
-  return (
-    <View className="w-full p-2 border-[1px] border-t-0 border-zinc-300 rounded-b-xl">
-      <TextInput
-        value={customer.name}
-        onChangeText={(value) => setCustomer({ ...customer, name: value })}
-        placeholder="Full Name"
-        className="bg-zinc-300 rounded-lg"
-      />
-      <TextInput
-        value={customer.email}
-        onChangeText={(value) =>
-          setCustomer({ ...customer, email: value.toLowerCase().trim() })
-        }
-        placeholder="Email Address"
-        className="bg-zinc-300 rounded-lg mt-1"
-      />
-      <TextInput
-        value={customer.phone}
-        keyboardType="numeric"
-        onChangeText={(value) =>
-          setCustomer({ ...customer, phone: value.toString().trim() })
-        }
-        placeholder="Phone Number"
-        className="bg-zinc-300 rounded-lg mt-1"
-      />
-      <TextInput
-        value={customer.address}
-        onChangeText={(value) => setCustomer({ ...customer, address: value })}
-        placeholder="Address Line"
-        className="bg-zinc-300 rounded-lg mt-1"
-      />
-      <TextInput
-        value={customer.city}
-        onChangeText={(value) => setCustomer({ ...customer, city: value })}
-        placeholder="City"
-        className="bg-zinc-300 rounded-lg mt-1"
-      />
-      <TextInput
-        value={customer.state}
-        onChangeText={(value) => setCustomer({ ...customer, state: value })}
-        placeholder="State"
-        className="bg-zinc-300 rounded-lg mt-1"
-      />
-    </View>
-  );
-};
-
-export default CustomPanelBuilder;
+export default PanelCustomers;

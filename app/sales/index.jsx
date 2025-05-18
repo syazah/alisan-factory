@@ -134,7 +134,7 @@ const SalesMainScreen = () => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    router.navigate(`/sales/view-order/${item._id}`)
+                    router.navigate(`/sales/view-admin-order/${item._id}`)
                   }
                   activeOpacity={0.7}
                   className="border-b-[1px] border-zinc-700 p-2 flex-row justify-between items-start"

@@ -177,7 +177,6 @@ const OrderDetailBom = () => {
       </head>
       <body>
         <div class="header">
-          <img src="https://www.alisan.io/images/alisan-smart-homes.png" alt="Alisan Smart Homes">
           <div class="address">
             <p>7-8, Sehrawat Complex,<br>
             Near Hanuman Mandir, Iffco Chowk,<br>
@@ -185,7 +184,7 @@ const OrderDetailBom = () => {
           </div>
         </div>
         <h1>Bill of Material</h1>
-        <h2>For: ${companyName}</h2>
+        <h2>From: ${companyName}</h2>
         <h2>Reference #${orderDetailForBOM.referenceNumber}</h2>
 
         <h3>Front Panels</h3>

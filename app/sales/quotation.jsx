@@ -250,19 +250,10 @@ const Quotation = () => {
   async function SendToAdmin() {
     try {
       const token = await AsyncStorage.getItem("token");
-      const panelDataToSend = orderDetailForBOM.panelData.map((panelData) => {
-        console.log(panelData);
-        return {
-          ...panelData,
-          panelName: panelData.panelData.panelName,
-          panelType: "SalesPanel",
-          panelCollection: "SalesCollection",
-        };
-      });
-      const res = await fetch(`${url}/api/v1/sales/create-order`, {
+      const res = await fetch(`${url}/api/v1/sales/send-admin`, {
         headers: { "Content-Type": "application/json" },
         method: "POST",
-        body: JSON.stringify({ panelData: panelDataToSend, token }),
+        body: JSON.stringify({ id: orderDetailForBOM._id }),
       });
       const data = await res.json();
       if (data.success === true) {

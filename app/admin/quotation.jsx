@@ -146,7 +146,6 @@ const Quotation = () => {
         </head>
         <body>
           <div class="header">
-            <img src="https://www.alisan.io/images/alisan-smart-homes.png" alt="Alisan Smart Homes">
             <div class="address">
               <p>7-8, Sehrawat Complex,<br>
               Near Hanuman Mandir, Iffco Chowk,<br>
@@ -155,13 +154,10 @@ const Quotation = () => {
           </div>
           <table>
             <tr class="info-row">
-              <td colspan="7"><h1>Alisan Smart Homes</h1></td>
+              <td colspan="7"><h1>${companyName}</h1></td>
             </tr>
             <tr class="info-row">
               <td colspan="7"><h2>Quotation</h2></td>
-            </tr>
-            <tr class="info-row">
-              <td colspan="7"><h3>For: ${companyName}</h3></td>
             </tr>
             <tr class="info-row">
               <td colspan="7"><h3>Reference Number: ${
