@@ -19,7 +19,8 @@
         "NSCameraUsageDescription": "This app uses the camera to take photos and videos.",
         "NSMicrophoneUsageDescription": "This app uses the microphone for recording audio.",
         "NSUserDefaultLibraryUsageDescription": "This app accesses your files to display and modify PDFs or images."
-      }
+      },
+      "bundleIdentifier": "com.alisansmarthomes.alisanapp"
     },
     "android": {
       "package": "com.alisansmarthomes.alisanapp",

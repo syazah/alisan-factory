@@ -94,7 +94,7 @@ export function BomBoardCalculator(panelData) {
         screws += 8;
         relayBoard["6_REL_S8D1"] += 1;
       } else if (variant.switches === 6 && variant.fans === 1) {
-        touchSenseBoard["6_SEN_S8F1"] += 1;
+        touchSenseBoard["6_SEN_S6F1"] += 1;
         cSection["3C"] += 1;
         screws += 8;
         relayBoard["6_REL_S6F1"] += 1;
@@ -195,7 +195,7 @@ export function BomBoardCalculator(panelData) {
           screws += 8;
           relayBoard["6_REL_S8D1"] += 1;
         } else if (variant.switches === 6 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
+          touchSenseBoard["6_SEN_S6F1"] += 1;
           cSection["3C"] += 1;
           screws += 8;
           relayBoard["6_REL_S6F1"] += 1;
@@ -294,7 +294,7 @@ export function BomBoardCalculator(panelData) {
           screws += 8;
           relayBoard["6_REL_S8D1"] += 1;
         } else if (variant.switches === 6 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
+          touchSenseBoard["6_SEN_S6F1"] += 1;
           cSection["3C"] += 1;
           screws += 8;
           relayBoard["6_REL_S6F1"] += 1;
