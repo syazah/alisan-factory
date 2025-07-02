@@ -52,6 +52,7 @@ const ViewOrder = () => {
         panelGlass: panel.panelData.panelGlass,
         panelFrame: panel.panelData.panelFrame,
         quantity: panel.panelData.quantity || 1,
+        remarks: panel.remarks || "",
         switches: 0,
         curtains: 0,
         fans: 0,
@@ -350,6 +351,9 @@ const ViewOrder = () => {
                       </Text>
                       <Text className="text-sm w-full ml-4 capitalize">
                         Dimmers : {panel.dimmers}
+                      </Text>
+                      <Text className="text-sm w-full ml-4 capitalize">
+                        Remarks : {panel.remarks}
                       </Text>
                       <View className="flex-row mt-1">
                         <Text

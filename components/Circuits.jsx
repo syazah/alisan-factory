@@ -199,6 +199,14 @@ const Circuits = ({ circuitType, currentValue, setCurrentValue }) => {
                 },
                 label: "8 Switches 1 Fan",
               },
+              {
+                cost: 6,
+                variant: {
+                  switches: 4,
+                  fans: 2,
+                },
+                label: "4 Switches 2 Fan",
+              },
             ].map((item, index) => (
               <Picker.Item value={item} key={index} label={item.label} />
             ))}

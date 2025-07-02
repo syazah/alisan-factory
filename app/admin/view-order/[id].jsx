@@ -272,7 +272,7 @@ const SpecificOrder = () => {
                 Phone Number : {orderDetail.raisedBy?.number}
               </Text>
               <Text className="text-base w-full border-b-[1px] border-zinc-300">
-                Created By : {} [{orderDetail.raisedBy?.createdByModel}]
+                Created By : { } [{orderDetail.raisedBy?.createdByModel}]
               </Text>
             </View>
           )}
@@ -298,6 +298,9 @@ const SpecificOrder = () => {
                   <Text className="text-sm w-full ml-4 capitalize">
                     Panel Quantity : {panel.quantity || 1}
                   </Text>
+                  <Text className="text-sm w-full ml-4 capitalize">
+                    Panel Remarks : {panel.remarks || "N/A"}
+                  </Text>
                 </View>
               ))}
             </View>
@@ -316,9 +319,8 @@ const SpecificOrder = () => {
             setBottomBarSize(70);
           }
         }}
-        className={`absolute z-30 right-2 ${
-          bottomBarSize === 70 ? "bottom-20" : "bottom-4"
-        }  rounded-full w-12 h-12 bg-red-600 justify-center items-center`}
+        className={`absolute z-30 right-2 ${bottomBarSize === 70 ? "bottom-20" : "bottom-4"
+          }  rounded-full w-12 h-12 bg-red-600 justify-center items-center`}
       >
         {bottomBarSize === 70 ? (
           <AntDesign name="pdffile1" size={30} color="white" />
@@ -412,8 +414,8 @@ function BottomBar({
                   ? bottomBarSize === 70
                     ? "Assign Sales Person"
                     : salesTeam === null
-                    ? "Loading..."
-                    : "Close"
+                      ? "Loading..."
+                      : "Close"
                   : "Assign Manufacturer"}
               </Text>
             </TouchableOpacity>
@@ -440,8 +442,8 @@ function BottomBar({
                 {bottomBarSize === 70
                   ? "Assign Manufact. Head"
                   : manufacturingTeam === null
-                  ? "Loading..."
-                  : "Close"}
+                    ? "Loading..."
+                    : "Close"}
               </Text>
             </TouchableOpacity>
           )}

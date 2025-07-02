@@ -24,6 +24,7 @@ const PanelBuilder = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [spaceLeft, setSpaceLeft] = useState(2);
   const [quantity, setQuantity] = useState(1);
+  const [remarks, setRemarks] = useState("");
   const flatListRef = useRef(null);
 
   const moveStep = () => {
@@ -50,7 +51,8 @@ const PanelBuilder = () => {
                   body: JSON.stringify({
                     panelData: currentData,
                     collectionId: id,
-                    quantity
+                    quantity,
+                    remarks
                   }),
                 });
                 const data = await res.json();
@@ -121,6 +123,8 @@ const PanelBuilder = () => {
           moveStep={moveStep}
           quantity={quantity}
           setQuantity={setQuantity}
+          remarks={remarks}
+          setRemarks={setRemarks}
         />
       );
     }
@@ -459,7 +463,7 @@ function FrameSelector({ currentData, setCurrentData, moveStep }) {
   );
 }
 
-function FinalSlide({ currentData, setCurrentData, moveStep, quantity, setQuantity }) {
+function FinalSlide({ currentData, setCurrentData, moveStep, quantity, setQuantity, remarks, setRemarks }) {
   const { width } = Dimensions.get("window");
   return (
     <View style={{ width }} className="flex-1 h-full p-2 justify-between">
@@ -523,7 +527,18 @@ function FinalSlide({ currentData, setCurrentData, moveStep, quantity, setQuanti
             onChangeText={(value) =>
               setCurrentData({ ...currentData, panelName: value })
             }
-            className="w-full rounded-full bg-zinc-900 px-4 text-white"
+            className="w-full rounded-sm bg-zinc-900 px-4 text-white"
+          />
+        </View>
+        <View className="w-full flex flex-row justify-between items-center mt-4">
+          <TextInput
+            value={remarks}
+            placeholderTextColor={"#aaa"}
+            placeholder="Enter Remarks"
+            onChangeText={(value) =>
+              setRemarks(value)
+            }
+            className="w-full rounded-sm bg-zinc-900 px-4 text-white h-20"
           />
         </View>
       </View>
