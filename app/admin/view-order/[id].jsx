@@ -295,6 +295,9 @@ const SpecificOrder = () => {
                   <Text className="text-sm w-full ml-4 capitalize">
                     Panel Size : {panel.panelData.panelSize}
                   </Text>
+                  <Text className="text-sm w-full ml-4 capitalize">
+                    Panel Quantity : {panel.quantity || 1}
+                  </Text>
                 </View>
               ))}
             </View>

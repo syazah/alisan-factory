@@ -69,7 +69,7 @@ const Quotation = () => {
     // Open the modal to get the company name
     setCompanyNameModalVisible(true);
   };
-  
+
   const generateAndDownloadPDF = async () => {
     const htmlContent = generateHTML(); // Generate the HTML string
     const { uri } = await Print.printToFileAsync({ html: htmlContent }); // Convert to PDF
@@ -160,9 +160,8 @@ const Quotation = () => {
               <td colspan="7"><h2>Quotation</h2></td>
             </tr>
             <tr class="info-row">
-              <td colspan="7"><h3>Reference Number: ${
-                orderDetailForBOM.referenceNumber
-              }</h3></td>
+              <td colspan="7"><h3>Reference Number: ${orderDetailForBOM.referenceNumber
+      }</h3></td>
             </tr>
             <tr class="info-row">
               <td colspan="7" class="website-link">
@@ -184,13 +183,12 @@ const Quotation = () => {
             </thead>
             <tbody>
               ${finalCosts
-                .map(
-                  (item, index) => `
+        .map(
+          (item, index) => `
                 <tr>
                   <td>${index + 1}</td>
-                  <td>Touch ${item.switches} Switches ${
-                    item.curtains
-                  } Curtains ${item.dimmers} Dimmers ${item.fans} Fans</td>
+                  <td>Touch ${item.switches} Switches ${item.curtains
+            } Curtains ${item.dimmers} Dimmers ${item.fans} Fans</td>
                   <td>${item.panelSize}M</td>
                   <td>${item.panelGlass}</td>
                   <td>₹${item.cost}</td>
@@ -198,22 +196,21 @@ const Quotation = () => {
                   <td>₹${item.cost}</td>
                 </tr>
               `
-                )
-                .join("")}
+        )
+        .join("")}
               <tr class="total-row">
                 <td colspan="6">Total Cost</td>
                 <td>₹${finalCosts.reduce(
-                  (sum, item) => sum + item.cost,
-                  0
-                )}/.</td>
+          (sum, item) => sum + item.cost,
+          0
+        )}/.</td>
               </tr>
               <tr class="total-row">
                 <td colspan="6">Sales Cost</td>
-                <td>₹${
-                  finalSalesCost ||
-                  orderDetailForBOM.quotationCost ||
-                  finalCosts.reduce((sum, item) => sum + item.cost, 0)
-                }/.</td>
+                <td>₹${finalSalesCost ||
+      orderDetailForBOM.quotationCost ||
+      finalCosts.reduce((sum, item) => sum + item.cost, 0)
+      }/.</td>
               </tr>
             </tbody>
           </table>
@@ -312,6 +309,12 @@ const Quotation = () => {
                 <Text className="text-white font-normal text-base">Color</Text>
               </View>
               <View className="w-[100px] h-[40px] justify-center items-center border-b-[1px] border-r-[1px] border-zinc-900 p-1">
+                <Text className="text-white font-normal text-base">Quantity</Text>
+              </View>
+              <View className="w-[100px] h-[40px] justify-center items-center border-b-[1px] border-r-[1px] border-zinc-900 p-1">
+                <Text className="text-white font-normal text-base">Unit Price</Text>
+              </View>
+              <View className="w-[100px] h-[40px] justify-center items-center border-b-[1px] border-r-[1px] border-zinc-900 p-1">
                 <Text className="text-white font-normal text-base">Price</Text>
               </View>
               <View className="w-[100px] h-[40px] justify-center items-center border-b-[1px] border-r-[1px] border-zinc-900 p-1">
@@ -330,9 +333,8 @@ const Quotation = () => {
               return (
                 <View
                   key={index}
-                  className={`w-full ${
-                    index % 2 == 0 ? "bg-zinc-300" : ""
-                  } flex-row justify-start items-center`}
+                  className={`w-full ${index % 2 == 0 ? "bg-zinc-300" : ""
+                    } flex-row justify-start items-center`}
                 >
                   <View className="w-[80px] h-[40px] border-b-[1px] border-r-[1px] border-zinc-900 p-1">
                     <Text className="text-sm ">{index + 1}</Text>
@@ -348,6 +350,12 @@ const Quotation = () => {
                   </View>
                   <View className="w-[100px] h-[40px] border-b-[1px] border-r-[1px] border-zinc-900 p-1">
                     <Text className="text-sm ">{item.panelGlass}</Text>
+                  </View>
+                  <View className="w-[100px] h-[40px] border-b-[1px] border-r-[1px] border-zinc-900 p-1">
+                    <Text className="text-sm ">{item.quantity}</Text>
+                  </View>
+                  <View className="w-[100px] h-[40px] border-b-[1px] border-r-[1px] border-zinc-900 p-1">
+                    <Text className="text-sm ">{item.cost / item.quantity}</Text>
                   </View>
                   <View className="w-[100px] h-[40px] border-b-[1px] border-r-[1px] border-zinc-900 p-1">
                     <Text className="text-sm ">{item.cost}</Text>
@@ -384,7 +392,7 @@ const Quotation = () => {
       >
         <Feather name="download" size={26} color="white" />
       </TouchableOpacity>
-      
+
       {/* Company Name Modal */}
       {companyNameModalVisible && (
         <View className="w-full h-full inset-0 flex-1 bg-black/40 absolute top-0 left-0 bottom-0 right-0 justify-center items-center">
@@ -418,7 +426,7 @@ const Quotation = () => {
           </View>
         </View>
       )}
-      
+
       {editQuotation && (
         <View className="w-full h-full inset-0 flex-1 bg-black/40 mt-10 absolute top-0 left-0 bottom-0 right-0 justify-center items-center">
           <View className="w-[90%] p-2 bg-white rounded-xl ">

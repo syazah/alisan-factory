@@ -8,6 +8,7 @@ export function CalculatePanelData(panelData) {
       panelType: panel.panelType || "Sales Panel",
       panelGlass: panel.panelData.panelGlass,
       panelFrame: panel.panelData.panelFrame,
+      quantity: panel.quantity || 1,
       switches: 0,
       curtains: 0,
       fans: 0,

@@ -36,6 +36,7 @@ const ViewOrder = () => {
         panelType: panel.panelType,
         panelGlass: panel.panelData.panelGlass,
         panelFrame: panel.panelData.panelFrame,
+        quantity: panel.quantity || 1,
         switches: 0,
         curtains: 0,
         fans: 0,
@@ -193,6 +194,9 @@ const ViewOrder = () => {
                   <Text className="text-sm w-full ml-4 capitalize">
                     Dimmers : {panel.dimmers}
                   </Text>
+                  <Text className="text-sm w-full ml-4 capitalize">
+                    Quantity : {panel.quantity}
+                  </Text>
                   <View className="flex-row mt-1">
                     <Text
                       style={{ backgroundColor: panel.panelFrame }}
@@ -225,9 +229,8 @@ const ViewOrder = () => {
             setBottomBarSize(70);
           }
         }}
-        className={`absolute z-10 right-2 ${
-          bottomBarSize === 70 ? "bottom-20" : "bottom-4"
-        }  rounded-full w-12 h-12 bg-red-600 justify-center items-center`}
+        className={`absolute z-10 right-2 ${bottomBarSize === 70 ? "bottom-20" : "bottom-4"
+          }  rounded-full w-12 h-12 bg-red-600 justify-center items-center`}
       >
         {bottomBarSize === 70 ? (
           <AntDesign name="pdffile1" size={30} color="white" />

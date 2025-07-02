@@ -16,12 +16,14 @@ import Circuits from "../../../components/Circuits";
 import { router, useLocalSearchParams } from "expo-router";
 import url from "../../../url";
 import { CustomPanelBuilder } from "../../../store/admin/atom";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const PanelBuilder = () => {
-    const {id} = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
   const [currentData, setCurrentData] = useRecoilState(CustomPanelBuilder);
-  const [currentStep, setCurrentStep] = React.useState(0);
-  const [spaceLeft, setSpaceLeft] = React.useState(2);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [spaceLeft, setSpaceLeft] = useState(2);
+  const [quantity, setQuantity] = useState(1);
   const flatListRef = useRef(null);
 
   const moveStep = () => {
@@ -40,7 +42,6 @@ const PanelBuilder = () => {
             {
               text: "Submit",
               onPress: async () => {
-                 console.log("currentData", currentData);
                 const res = await fetch(`${url}/api/v1/sales/create-panel`, {
                   method: "POST",
                   headers: {
@@ -49,6 +50,7 @@ const PanelBuilder = () => {
                   body: JSON.stringify({
                     panelData: currentData,
                     collectionId: id,
+                    quantity
                   }),
                 });
                 const data = await res.json();
@@ -108,6 +110,7 @@ const PanelBuilder = () => {
           currentData={currentData}
           setCurrentData={setCurrentData}
           moveStep={moveStep}
+
         />
       );
     } else if (stepType === 5) {
@@ -116,6 +119,8 @@ const PanelBuilder = () => {
           currentData={currentData}
           setCurrentData={setCurrentData}
           moveStep={moveStep}
+          quantity={quantity}
+          setQuantity={setQuantity}
         />
       );
     }
@@ -267,17 +272,15 @@ function AccessoriesSelector({ currentData, setCurrentData, moveStep }) {
           <View className="w-full flex flex-row justify-start items-center">
             <TouchableOpacity
               onPress={() => setWantAccessory(true)}
-              className={`px-4 py-2 ${
-                wantAccessory ? "bg-red-600" : "bg-zinc-900"
-              } rounded-full mt-2`}
+              className={`px-4 py-2 ${wantAccessory ? "bg-red-600" : "bg-zinc-900"
+                } rounded-full mt-2`}
             >
               <Text className="text-white">YES</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => setWantAccessory(false)}
-              className={`px-4 py-2 ${
-                !wantAccessory ? "bg-red-600" : "bg-zinc-900"
-              } ml-2 rounded-full mt-2`}
+              className={`px-4 py-2 ${!wantAccessory ? "bg-red-600" : "bg-zinc-900"
+                } ml-2 rounded-full mt-2`}
             >
               <Text className="text-white">NO</Text>
             </TouchableOpacity>
@@ -456,15 +459,37 @@ function FrameSelector({ currentData, setCurrentData, moveStep }) {
   );
 }
 
-function FinalSlide({ currentData, setCurrentData, moveStep }) {
+function FinalSlide({ currentData, setCurrentData, moveStep, quantity, setQuantity }) {
   const { width } = Dimensions.get("window");
-
   return (
     <View style={{ width }} className="flex-1 h-full p-2 justify-between">
       <View className="flex flex-col">
         <Text className="text-xl font-semibold text-zinc-200 border-b-[1px] border-red-600">
           Final Submit
         </Text>
+        <View className="w-full flex flex-row justify-between items-center mt-4">
+          <Text className="text-white font-semibold text-sm">Quantity</Text>
+          <View className="flex-row gap-2 items-center">
+            <TouchableOpacity className="px-2 py-0 bg-red-600 rounded-full w-8 h-8 justify-center items-center" onPress={() => {
+              if (quantity > 1) {
+                setQuantity(quantity - 1);
+              } else {
+                setQuantity(1);
+              }
+            }}>
+              <AntDesign name="minuscircleo" size={16} color="white" />
+            </TouchableOpacity>
+            <Text className="text-white">{quantity}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setQuantity(quantity + 1);
+              }}
+              className="px-2 py-1 bg-red-600 rounded-full w-8 h-8 justify-center items-center"
+            >
+              <AntDesign name="pluscircleo" size={16} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View className="w-full flex flex-row justify-between items-center mt-4">
           <Text className="text-white font-semibold text-sm">
             Want Automation
@@ -474,9 +499,8 @@ function FinalSlide({ currentData, setCurrentData, moveStep }) {
               onPress={() =>
                 setCurrentData({ ...currentData, automationRequired: true })
               }
-              className={`px-4 py-2 ${
-                currentData.automationRequired ? "bg-red-600" : "bg-zinc-900"
-              } rounded-full mt-2`}
+              className={`px-4 py-2 ${currentData.automationRequired ? "bg-red-600" : "bg-zinc-900"
+                } rounded-full mt-2`}
             >
               <Text className="text-white">YES</Text>
             </TouchableOpacity>
@@ -484,9 +508,8 @@ function FinalSlide({ currentData, setCurrentData, moveStep }) {
               onPress={() =>
                 setCurrentData({ ...currentData, automationRequired: false })
               }
-              className={`px-4 py-2 ${
-                !currentData.automationRequired ? "bg-red-600" : "bg-zinc-900"
-              } ml-2 rounded-full mt-2`}
+              className={`px-4 py-2 ${!currentData.automationRequired ? "bg-red-600" : "bg-zinc-900"
+                } ml-2 rounded-full mt-2`}
             >
               <Text className="text-white">NO</Text>
             </TouchableOpacity>

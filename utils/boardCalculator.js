@@ -82,301 +82,304 @@ export function BomBoardCalculator(panelData) {
 
   let screws = 0;
   panelData.forEach((panel) => {
+    const quantity = panel.quantity || 1;
     panel.panelData.panelVariant.forEach((variant) => {
       if (variant.switches === 8 && variant.fans === 1) {
-        touchSenseBoard["6_SEN_S8F1"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["6_REL_S8F1"] += 1;
+        touchSenseBoard["6_SEN_S8F1"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["6_REL_S8F1"] += quantity;
       } else if (variant.switches === 8 && variant.dimmers === 1) {
-        touchSenseBoard["6_SEN_S8F1"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["6_REL_S8D1"] += 1;
+        touchSenseBoard["6_SEN_S8F1"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["6_REL_S8D1"] += quantity;
       } else if (variant.switches === 6 && variant.fans === 1) {
-        touchSenseBoard["6_SEN_S6F1"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["6_REL_S6F1"] += 1;
+        touchSenseBoard["6_SEN_S6F1"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["6_REL_S6F1"] += quantity;
       } else if (
         variant.switches === 4 &&
         variant.fans === 1 &&
         variant.dimmer === 1
       ) {
-        touchSenseBoard["6_SEN_S4F2"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["6_REL_S4F1D1"] += 1;
+        touchSenseBoard["6_SEN_S4F2"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["6_REL_S4F1D1"] += quantity;
       } else if (variant.switches === 4 && variant.dimmer === 2) {
-        touchSenseBoard["6_SEN_S4F2"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["4_REL_S4D2"] += 1;
+        touchSenseBoard["6_SEN_S4F2"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["4_REL_S4D2"] += quantity;
       } else if (variant.switches === 4 && variant.fans === 2) {
-        touchSenseBoard["6_SEN_S4F2"] += 1;
-        cSection["3C"] += 1;
-        screws += 8;
-        relayBoard["4_REL_S4F2"] += 1;
+        touchSenseBoard["6_SEN_S4F2"] += quantity;
+        cSection["3C"] += quantity;
+        screws += 8 * quantity;
+        relayBoard["4_REL_S4F2"] += quantity;
       } else if (variant.dimmers === 2) {
-        touchSenseBoard["4_SEN_F2"] += 1;
-        cSection["2C"] += 1;
-        screws += 6;
-        relayBoard["4_REL_F2"] += 1;
+        touchSenseBoard["4_SEN_F2"] += quantity;
+        cSection["2C"] += quantity;
+        screws += 6 * quantity;
+        relayBoard["4_REL_F2"] += quantity;
       } else if (variant.switches === 6) {
-        touchSenseBoard["4_SEN_S6"] += 1;
-        cSection["2C"] += 1;
-        screws += 6;
-        relayBoard["4_REL_S6"] += 1;
+        touchSenseBoard["4_SEN_S6"] += quantity;
+        cSection["2C"] += quantity;
+        screws += 6 * quantity;
+        relayBoard["4_REL_S6"] += quantity;
       } else if (variant.switches === 2 && variant.fans === 1) {
-        touchSenseBoard["4_SEN_S2F1"] += 1;
-        cSection["2C"] += 1;
-        screws += 6;
-        relayBoard["4_REL_S2F1"] += 1;
+        touchSenseBoard["4_SEN_S2F1"] += quantity;
+        cSection["2C"] += quantity;
+        screws += 6 * quantity;
+        relayBoard["4_REL_S2F1"] += quantity;
       } else if (variant.switches === 4 && variant.dimmers === 1) {
-        touchSenseBoard["4_SEN_S4F1"] += 1;
-        cSection["2C"] += 1;
-        screws += 6;
-        relayBoard["4_REL_S4F1"] += 1;
+        touchSenseBoard["4_SEN_S4F1"] += quantity;
+        cSection["2C"] += quantity;
+        screws += 6 * quantity;
+        relayBoard["4_REL_S4F1"] += quantity;
       } else if (variant.switches === 4 && variant.fans === 1) {
-        touchSenseBoard["4_SEN_S4F1"] += 1;
-        cSection["2C"] += 1;
-        screws += 6;
-        relayBoard["4_REL_S4F1"] += 1;
+        touchSenseBoard["4_SEN_S4F1"] += quantity;
+        cSection["2C"] += quantity;
+        screws += 6 * quantity;
+        relayBoard["4_REL_S4F1"] += quantity;
       } else if (variant.bells === 1) {
-        touchSenseBoard["2_SEN_B"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_B"] += 1;
+        touchSenseBoard["2_SEN_B"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_B"] += quantity;
       } else if (variant.curtains === 2) {
-        touchSenseBoard["2_SEN_C2"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_C2"] += 1;
+        touchSenseBoard["2_SEN_C2"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_C2"] += quantity;
       } else if (variant.curtains === 1) {
-        touchSenseBoard["2_SEN_C1"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_C1"] += 1;
+        touchSenseBoard["2_SEN_C1"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_C1"] += quantity;
       } else if (variant.dimmers === 1) {
-        touchSenseBoard["2_SEN_F1"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_F1"] += 1;
+        touchSenseBoard["2_SEN_F1"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_F1"] += quantity;
       } else if (variant.fans === 1) {
-        touchSenseBoard["2_SEN_F1"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_F1"] += 1;
+        touchSenseBoard["2_SEN_F1"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_F1"] += quantity;
       } else if (variant.switches === 4) {
-        touchSenseBoard["2_SEN_S4"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_S4"] += 1;
+        touchSenseBoard["2_SEN_S4"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_S4"] += quantity;
       } else if (variant.switches === 2) {
-        touchSenseBoard["2_SEN_S2"] += 1;
-        cSection["1C"] += 1;
-        screws += 4;
-        relayBoard["2_REL_S2"] += 1;
+        touchSenseBoard["2_SEN_S2"] += quantity;
+        cSection["1C"] += quantity;
+        screws += 4 * quantity;
+        relayBoard["2_REL_S2"] += quantity;
       }
     });
   });
 
   panelData.forEach((panel) => {
+    const quantity = panel.quantity || 1;
     if (panel.panelData.bigPanelVariant[0].length > 0) {
       panel.panelData.bigPanelVariant[0].forEach((variant) => {
         if (variant.switches === 8 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S8F1"] += 1;
+          touchSenseBoard["6_SEN_S8F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S8F1"] += quantity;
         } else if (variant.switches === 8 && variant.dimmers === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S8D1"] += 1;
+          touchSenseBoard["6_SEN_S8F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S8D1"] += quantity;
         } else if (variant.switches === 6 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S6F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S6F1"] += 1;
+          touchSenseBoard["6_SEN_S6F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S6F1"] += quantity;
         } else if (
           variant.switches === 4 &&
           variant.fans === 1 &&
           variant.dimmer === 1
         ) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S4F1D1"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S4F1D1"] += quantity;
         } else if (variant.switches === 4 && variant.dimmer === 2) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["4_REL_S4D2"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["4_REL_S4D2"] += quantity;
         } else if (variant.switches === 4 && variant.fans === 2) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["4_REL_S4F2"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["4_REL_S4F2"] += quantity;
         } else if (variant.dimmers === 2) {
-          touchSenseBoard["4_SEN_F2"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_F2"] += 1;
+          touchSenseBoard["4_SEN_F2"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_F2"] += quantity;
         } else if (variant.switches === 6) {
-          touchSenseBoard["4_SEN_S6"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S6"] += 1;
+          touchSenseBoard["4_SEN_S6"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S6"] += quantity;
         } else if (variant.switches === 2 && variant.fans === 1) {
-          touchSenseBoard["4_SEN_S2F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S2F1"] += 1;
+          touchSenseBoard["4_SEN_S2F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S2F1"] += quantity;
         } else if (variant.switches === 4 && variant.dimmers === 1) {
-          touchSenseBoard["4_SEN_S4F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S4F1"] += 1;
+          touchSenseBoard["4_SEN_S4F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S4F1"] += quantity;
         } else if (variant.switches === 4 && variant.fans === 1) {
-          touchSenseBoard["4_SEN_S4F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S4F1"] += 1;
+          touchSenseBoard["4_SEN_S4F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S4F1"] += quantity;
         } else if (variant.bells === 1) {
-          touchSenseBoard["2_SEN_B"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_B"] += 1;
+          touchSenseBoard["2_SEN_B"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_B"] += quantity;
         } else if (variant.curtains === 2) {
-          touchSenseBoard["2_SEN_C2"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_C2"] += 1;
+          touchSenseBoard["2_SEN_C2"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_C2"] += quantity;
         } else if (variant.curtains === 1) {
-          touchSenseBoard["2_SEN_C1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_C1"] += 1;
+          touchSenseBoard["2_SEN_C1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_C1"] += quantity;
         } else if (variant.dimmers === 1) {
-          touchSenseBoard["2_SEN_F1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_F1"] += 1;
+          touchSenseBoard["2_SEN_F1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_F1"] += quantity;
         } else if (variant.fans === 1) {
-          touchSenseBoard["2_SEN_F1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_F1"] += 1;
+          touchSenseBoard["2_SEN_F1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_F1"] += quantity;
         } else if (variant.switches === 4) {
-          touchSenseBoard["2_SEN_S4"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_S4"] += 1;
+          touchSenseBoard["2_SEN_S4"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_S4"] += quantity;
         } else if (variant.switches === 2) {
-          touchSenseBoard["2_SEN_S2"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_S2"] += 1;
+          touchSenseBoard["2_SEN_S2"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_S2"] += quantity;
         }
       });
     }
     if (panel.panelData.bigPanelVariant[1].length > 0) {
+      const quantity = panel.quantity || 1;
       panel.panelData.bigPanelVariant[1].forEach((variant) => {
         if (variant.switches === 8 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S8F1"] += 1;
+          touchSenseBoard["6_SEN_S8F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S8F1"] += quantity;
         } else if (variant.switches === 8 && variant.dimmers === 1) {
-          touchSenseBoard["6_SEN_S8F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S8D1"] += 1;
+          touchSenseBoard["6_SEN_S8F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S8D1"] += quantity;
         } else if (variant.switches === 6 && variant.fans === 1) {
-          touchSenseBoard["6_SEN_S6F1"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S6F1"] += 1;
+          touchSenseBoard["6_SEN_S6F1"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S6F1"] += quantity;
         } else if (
           variant.switches === 4 &&
           variant.fans === 1 &&
           variant.dimmer === 1
         ) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["6_REL_S4F1D1"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["6_REL_S4F1D1"] += quantity;
         } else if (variant.switches === 4 && variant.dimmer === 2) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["4_REL_S4D2"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["4_REL_S4D2"] += quantity;
         } else if (variant.switches === 4 && variant.fans === 2) {
-          touchSenseBoard["6_SEN_S4F2"] += 1;
-          cSection["3C"] += 1;
-          screws += 8;
-          relayBoard["4_REL_S4F2"] += 1;
+          touchSenseBoard["6_SEN_S4F2"] += quantity;
+          cSection["3C"] += quantity;
+          screws += 8 * quantity;
+          relayBoard["4_REL_S4F2"] += quantity;
         } else if (variant.dimmers === 2) {
-          touchSenseBoard["4_SEN_F2"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_F2"] += 1;
+          touchSenseBoard["4_SEN_F2"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_F2"] += quantity;
         } else if (variant.switches === 6) {
-          touchSenseBoard["4_SEN_S6"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S6"] += 1;
+          touchSenseBoard["4_SEN_S6"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S6"] += quantity;
         } else if (variant.switches === 2 && variant.fans === 1) {
-          touchSenseBoard["4_SEN_S2F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S2F1"] += 1;
+          touchSenseBoard["4_SEN_S2F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S2F1"] += quantity;
         } else if (variant.switches === 4 && variant.dimmers === 1) {
-          touchSenseBoard["4_SEN_S4F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S4F1"] += 1;
+          touchSenseBoard["4_SEN_S4F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S4F1"] += quantity;
         } else if (variant.switches === 4 && variant.fans === 1) {
-          touchSenseBoard["4_SEN_S4F1"] += 1;
-          cSection["2C"] += 1;
-          screws += 6;
-          relayBoard["4_REL_S4F1"] += 1;
+          touchSenseBoard["4_SEN_S4F1"] += quantity;
+          cSection["2C"] += quantity;
+          screws += 6 * quantity;
+          relayBoard["4_REL_S4F1"] += quantity;
         } else if (variant.bells === 1) {
-          touchSenseBoard["2_SEN_B"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_B"] += 1;
+          touchSenseBoard["2_SEN_B"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_B"] += quantity;
         } else if (variant.curtains === 2) {
-          touchSenseBoard["2_SEN_C2"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_C2"] += 1;
+          touchSenseBoard["2_SEN_C2"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_C2"] += quantity;
         } else if (variant.curtains === 1) {
-          touchSenseBoard["2_SEN_C1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_C1"] += 1;
+          touchSenseBoard["2_SEN_C1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_C1"] += quantity;
         } else if (variant.dimmers === 1) {
-          touchSenseBoard["2_SEN_F1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_F1"] += 1;
+          touchSenseBoard["2_SEN_F1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_F1"] += quantity;
         } else if (variant.fans === 1) {
-          touchSenseBoard["2_SEN_F1"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_F1"] += 1;
+          touchSenseBoard["2_SEN_F1"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_F1"] += quantity;
         } else if (variant.switches === 4) {
-          touchSenseBoard["2_SEN_S4"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_S4"] += 1;
+          touchSenseBoard["2_SEN_S4"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_S4"] += quantity;
         } else if (variant.switches === 2) {
-          touchSenseBoard["2_SEN_S2"] += 1;
-          cSection["1C"] += 1;
-          screws += 4;
-          relayBoard["2_REL_S2"] += 1;
+          touchSenseBoard["2_SEN_S2"] += quantity;
+          cSection["1C"] += quantity;
+          screws += 4 * quantity;
+          relayBoard["2_REL_S2"] += quantity;
         }
       });
     }
@@ -384,46 +387,47 @@ export function BomBoardCalculator(panelData) {
 
   //GLASS SOCKET
   panelData.forEach((panel) => {
+    const quantity = panel.quantity || 1;
     panel.panelData.panelVariant.forEach((variant) => {
       if (panel.panelData.panelSize === 2) {
         if (panel.panelData.panelGlass === "#000") {
           if (variant === "ext") {
-            glassPart["2_G1_BLK"] += 1;
+            glassPart["2_G1_BLK"] += quantity;
           } else {
-            glassPart["2_GN_BLK"] += 1;
+            glassPart["2_GN_BLK"] += quantity;
           }
         } else if (panel.panelData.panelGlass === "#535150") {
           if (variant === "ext") {
-            glassPart["2_G1_GRY"] += 1;
+            glassPart["2_G1_GRY"] += quantity;
           } else {
-            glassPart["2_GN_GRY"] += 1;
+            glassPart["2_GN_GRY"] += quantity;
           }
         } else {
           if (variant === "ext") {
-            glassPart["2_G1_GLD"] += 1;
+            glassPart["2_G1_GLD"] += quantity;
           } else {
-            glassPart["2_GN_GLD"] += 1;
+            glassPart["2_GN_GLD"] += quantity;
           }
         }
       }
       if (panel.panelData.panelSize === 4) {
         if (panel.panelData.panelGlass === "#000") {
           if (variant === "ext") {
-            glassPart["4_G1_BLK"] += 1;
+            glassPart["4_G1_BLK"] += quantity;
           } else {
-            glassPart["4_GN_BLK"] += 1;
+            glassPart["4_GN_BLK"] += quantity;
           }
         } else if (panel.panelData.panelGlass === "#535150") {
           if (variant === "ext") {
-            glassPart["4_G1_GRY"] += 1;
+            glassPart["4_G1_GRY"] += quantity;
           } else {
-            glassPart["4_GN_GRY"] += 1;
+            glassPart["4_GN_GRY"] += quantity;
           }
         } else {
           if (variant === "ext") {
-            glassPart["4_G1_GLD"] += 1;
+            glassPart["4_G1_GLD"] += quantity;
           } else {
-            glassPart["4_GN_GLD"] += 1;
+            glassPart["4_GN_GLD"] += quantity;
           }
         }
       }
@@ -433,58 +437,58 @@ export function BomBoardCalculator(panelData) {
           if (variant === "ext") {
             extCount += 1;
             if (extCount == 1) {
-              glassPart["6_G1_BLK"] += 1;
+              glassPart["6_G1_BLK"] += quantity;
             } else {
-              glassPart["6_G2_BLK"] += 1;
-              glassPart["6_G1_BLK"] -= 1;
+              glassPart["6_G2_BLK"] += quantity;
+              glassPart["6_G1_BLK"] -= quantity;
             }
           } else {
-            glassPart["6_GN_BLK"] += 1;
+            glassPart["6_GN_BLK"] += quantity;
           }
         } else if (panel.panelData.panelGlass === "#535150") {
           if (variant === "ext") {
             extCount += 1;
             if (extCount == 1) {
-              glassPart["6_G1_GRY"] += 1;
+              glassPart["6_G1_GRY"] += quantity;
             } else {
-              glassPart["6_G2_GRY"] -= 1;
-              glassPart["6_G1_GRY"] += 1;
+              glassPart["6_G2_GRY"] -= quantity;
+              glassPart["6_G1_GRY"] += quantity;
             }
           } else {
-            glassPart["6_GN_GRY"] += 1;
+            glassPart["6_GN_GRY"] += quantity;
           }
         } else {
           if (variant === "ext") {
             extCount += 1;
             if (extCount == 1) {
-              glassPart["6_G1_GLD"] += 1;
+              glassPart["6_G1_GLD"] += quantity;
             } else {
-              glassPart["6_G2_GLD"] -= 1;
-              glassPart["6_G1_GLD"] += 1;
+              glassPart["6_G2_GLD"] -= quantity;
+              glassPart["6_G1_GLD"] += quantity;
             }
           } else {
-            glassPart["6_GN_GLD"] += 1;
+            glassPart["6_GN_GLD"] += quantity;
           }
         }
       }
       if (panel.panelData.panelSize === 8) {
         if (panel.panelData.panelGlass === "#000") {
           if (variant === "ext") {
-            glassPart["8_G1_BLK"] += 1;
+            glassPart["8_G1_BLK"] += quantity;
           } else {
-            glassPart["8_GN_BLK"] += 1;
+            glassPart["8_GN_BLK"] += quantity;
           }
         } else if (panel.panelData.panelGlass === "#535150") {
           if (variant === "ext") {
-            glassPart["8_G1_GRY"] += 1;
+            glassPart["8_G1_GRY"] += quantity;
           } else {
-            glassPart["8_GN_GRY"] += 1;
+            glassPart["8_GN_GRY"] += quantity;
           }
         } else {
           if (variant === "ext") {
-            glassPart["8_G1_GLD"] += 1;
+            glassPart["8_G1_GLD"] += quantity;
           } else {
-            glassPart["8_GN_GLD"] += 1;
+            glassPart["8_GN_GLD"] += quantity;
           }
         }
       }

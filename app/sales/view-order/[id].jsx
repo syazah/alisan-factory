@@ -37,8 +37,6 @@ const ViewOrder = () => {
   //   CALCULATE PANEL DATA
   function CalculatePanelData(customerData) {
     const newPanelArray = [];
-    
-    // Process all panels from all collections
     if (customerData && customerData.collections) {
       customerData.collections.forEach(collection => {
         if (collection.panels && collection.panels.length > 0) {
@@ -49,6 +47,7 @@ const ViewOrder = () => {
               panelType: panel.panelData?.panelType || 'Standard',
               panelGlass: panel.panelData?.panelGlass || '#CCCCCC',
               panelFrame: panel.panelData?.panelFrame || '#333333',
+              quantity: panel.panelData?.quantity || 1,
               switches: 0,
               curtains: 0,
               fans: 0,
@@ -70,7 +69,6 @@ const ViewOrder = () => {
                 }
               });
             }
-            
             newPanelArray.push(panelObj);
           });
         }
@@ -489,7 +487,7 @@ function BottomBar({ bottomBarSize, orderDetail, showPDF, setBottomBarSize }) {
         >
           <FontAwesome name="file-text-o" size={16} color="white" />
           <Text className="text-white font-medium text-sm ml-2">
-            View Quotation
+            View Quotations
           </Text>
         </TouchableOpacity>
       </View>
